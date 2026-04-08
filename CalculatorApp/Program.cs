@@ -1,20 +1,28 @@
 ﻿namespace CalculatorApp
 {
-    internal abstract class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
-            string[] possibleOperationSigns = ["+", "-", "*", "x", "/"];
             Console.Write("Enter the first number of the operation: ");
-            var firstNumber = Convert.ToDouble(Console.ReadLine());
+            if (!double.TryParse(Console.ReadLine(), out var firstNumber))
+            {
+                Console.WriteLine("Invalid Number!");
+                return;
+            }
             
             Console.Write("Enter Operation sign (+, -, * or x, /): ");
             var operationSign = Console.ReadLine();
             
             Console.Write("Enter the second number of the operation: ");
-            var secondNumber = Convert.ToDouble((Console.ReadLine()));
+            if (!double.TryParse(Console.ReadLine(), out var secondNumber))
+            {
+                Console.WriteLine("Invalid Number!");
+                return;
+            }
             
-            if (!possibleOperationSigns.Contains(operationSign) || operationSign == null)
+            string[] possibleOperationSigns = ["+", "-", "*", "x", "/"];
+            if (operationSign == null || !possibleOperationSigns.Contains(operationSign))
             {
                 Console.WriteLine("Invalid Operation Sign");
                 return;
@@ -38,9 +46,14 @@
                     result = SubtractTwoNumbers(a, b);
                     break;
                 case "*" or "x":
-                    result = MultiplyTwoNumber(a, b);
+                    result = MultiplyTwoNumbers(a, b);
                     break;
                 case "/":
+                    if (b == 0)
+                    {
+                        Console.WriteLine("Cannot divide by 0");
+                        break;
+                    }
                     result = DivideTwoNumbers(a, b);
                     break;
                 default:
@@ -59,7 +72,7 @@
             return a - b;
         }
 
-        private static double MultiplyTwoNumber(double a, double b)
+        private static double MultiplyTwoNumbers(double a, double b)
         {
             return a * b;
         }
