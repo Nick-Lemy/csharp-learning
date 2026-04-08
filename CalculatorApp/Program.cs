@@ -14,20 +14,26 @@
             Console.Write("Enter Operation sign (+, -, * or x, /): ");
             var operationSign = Console.ReadLine();
             
-            Console.Write("Enter the second number of the operation: ");
-            if (!double.TryParse(Console.ReadLine(), out var secondNumber))
-            {
-                Console.WriteLine("Invalid Number!");
-                return;
-            }
-            
             string[] possibleOperationSigns = ["+", "-", "*", "x", "/"];
             if (operationSign == null || !possibleOperationSigns.Contains(operationSign))
             {
                 Console.WriteLine("Invalid Operation Sign");
                 return;
             }
+            
+            Console.Write("Enter the second number of the operation: ");
+            if (!double.TryParse(Console.ReadLine(), out var secondNumber))
+            {
+                Console.WriteLine("Invalid Number!");
+                return;
+            }
 
+            if (operationSign == "/" && secondNumber == 0)
+            {
+                Console.WriteLine("Cannot divide by 0");
+                return;
+            }
+            
             var result = Calculate(firstNumber, operationSign, secondNumber);
             Console.WriteLine();
             Console.WriteLine($"Result of the operation {firstNumber} {operationSign} {secondNumber} is: {result}");
@@ -49,11 +55,6 @@
                     result = MultiplyTwoNumbers(a, b);
                     break;
                 case "/":
-                    if (b == 0)
-                    {
-                        Console.WriteLine("Cannot divide by 0");
-                        break;
-                    }
                     result = DivideTwoNumbers(a, b);
                     break;
                 default:
@@ -82,4 +83,4 @@
             return a / b;
         }
     }
-};
+}
