@@ -51,9 +51,15 @@ public class Program
   public class ElectricCar : Car, IElectric {
 
     public ElectricCar(string make, string model) : base(make, model) {}
+
+    public override void Describe()
+    {
+      Console.WriteLine($"Nice Electric Car of Make: {Make}; Model: {Model}");
+    }
+
     public void ChargeBattery()
     {
-      Console.WriteLine($"{Make} {Model} is charing...");
+      Console.WriteLine($"{Make} {Model} is charging...");
     }
   }
 }
