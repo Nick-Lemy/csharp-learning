@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/zkaynl7/perso/CalculatorApp/CalculatorApp/CalculatorApp.csproj": {}
+    "/home/zkaynl7/perso/csharp-learning/projects/CalculatorApp/CalculatorApp.csproj": {}
   },
   "projects": {
-    "/home/zkaynl7/perso/CalculatorApp/CalculatorApp/CalculatorApp.csproj": {
+    "/home/zkaynl7/perso/csharp-learning/projects/CalculatorApp/CalculatorApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/zkaynl7/perso/CalculatorApp/CalculatorApp/CalculatorApp.csproj",
+        "projectUniqueName": "/home/zkaynl7/perso/csharp-learning/projects/CalculatorApp/CalculatorApp.csproj",
         "projectName": "CalculatorApp",
-        "projectPath": "/home/zkaynl7/perso/CalculatorApp/CalculatorApp/CalculatorApp.csproj",
+        "projectPath": "/home/zkaynl7/perso/csharp-learning/projects/CalculatorApp/CalculatorApp.csproj",
         "packagesPath": "/home/zkaynl7/.nuget/packages/",
-        "outputPath": "/home/zkaynl7/perso/CalculatorApp/CalculatorApp/obj/",
+        "outputPath": "/home/zkaynl7/perso/csharp-learning/projects/CalculatorApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/zkaynl7/.nuget/NuGet/NuGet.Config"

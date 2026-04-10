@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/zkaynl7/perso/CalculatorApp/codewars/ReversedStrings/ReversedStrings.csproj",
+      "projectUniqueName": "/home/zkaynl7/perso/csharp-learning/codewars/ReversedStrings/ReversedStrings.csproj",
       "projectName": "ReversedStrings",
-      "projectPath": "/home/zkaynl7/perso/CalculatorApp/codewars/ReversedStrings/ReversedStrings.csproj",
+      "projectPath": "/home/zkaynl7/perso/csharp-learning/codewars/ReversedStrings/ReversedStrings.csproj",
       "packagesPath": "/home/zkaynl7/.nuget/packages/",
-      "outputPath": "/home/zkaynl7/perso/CalculatorApp/codewars/ReversedStrings/obj/",
+      "outputPath": "/home/zkaynl7/perso/csharp-learning/codewars/ReversedStrings/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/zkaynl7/.nuget/NuGet/NuGet.Config"
