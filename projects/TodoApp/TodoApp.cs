@@ -7,54 +7,56 @@ static public class TodoApp
 
     public static void RunApp()
     {
-        Console.WriteLine("\n====================== Welcome to the Todo App ======================");
-        Console.WriteLine("Available Options: ");
-        Console.WriteLine("1. Add a new task");
-        Console.WriteLine("2. Display the todo list");
-        Console.WriteLine("3. Toggle the status of a task");
-        Console.WriteLine("4. Update a task");
-        Console.WriteLine("5. Remove a task");
-        Console.WriteLine("6. Clear the todo list");
-        Console.WriteLine("7. Exit\n");
-
-        Console.Write("Select a number between 1-7: ");
-
-        if (!int.TryParse(Console.ReadLine(), out int option))
+        while (true)
         {
-            Console.WriteLine("Invalid input! Please enter a number corresponding to the options.");
-            RunApp();
+            Console.WriteLine("\n====================== Welcome to the Todo App ======================");
+            Console.WriteLine("Available Options: ");
+            Console.WriteLine("1. Add a new task");
+            Console.WriteLine("2. Display the todo list");
+            Console.WriteLine("3. Toggle the status of a task");
+            Console.WriteLine("4. Update a task");
+            Console.WriteLine("5. Remove a task");
+            Console.WriteLine("6. Clear the todo list");
+            Console.WriteLine("7. Exit\n");
+
+            Console.Write("Select a number between 1-7: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int option))
+            {
+                Console.WriteLine("Invalid input! Please enter a number corresponding to the options.");
+                continue;
+            }
+
+            switch (option)
+            {
+                case 1:
+                    OnOptionOne();
+                    break;
+                case 2:
+                    OnOptionTwo();
+                    break;
+
+                case 3:
+                    OnOptionThree();
+                    break;
+                case 4:
+                    OnOptionFour();
+                    break;
+                case 5:
+                    OnOptionFive();
+                    break;
+                case 6:
+                    OnOptionSix();
+                    break;
+                case 7:
+                    Console.WriteLine("\nThanks for using our App!....\n");
+                    return;
+                default:
+                    Console.WriteLine("Invalid option! Please select a number between 1 and 7.");
+                    break;
+            }
+            continue;
         }
-
-        switch (option)
-        {
-            case 1:
-                OnOptionOne();
-                break;
-            case 2:
-                OnOptionTwo();
-                break;
-
-            case 3:
-                OnOptionThree();
-                break;
-            case 4:
-                OnOptionFour();
-                break;
-            case 5:
-                OnOptionFive();
-                break;
-            case 6:
-                OnOptionSix();
-                break;
-            case 7:
-                Console.WriteLine("\nThanks for using our App!....\n");
-                return;
-            default:
-                Console.WriteLine("Invalid option! Please select a number between 1 and 7.");
-                break;
-        }
-        RunApp();
-
     }
 
     private static void OnOptionOne()
@@ -72,12 +74,10 @@ static public class TodoApp
         }
         AddNewTodo(title, desc);
     }
-
     private static void OnOptionTwo()
     {
         DisplayTodoList();
     }
-
     private static void OnOptionThree()
     {
         Console.Write("Enter id of the Task to toggle status: ");
@@ -88,7 +88,6 @@ static public class TodoApp
         }
         ToggleTodoStatus(idOfTaskToToggleStatus);
     }
-
     private static void OnOptionFour()
     {
         Console.Write("Enter id of the Task to update: ");
@@ -106,7 +105,6 @@ static public class TodoApp
         UpdateTodo(id, description: string.IsNullOrWhiteSpace(updatedDescription) ? null : updatedDescription, title: string.IsNullOrWhiteSpace(updatedTitle) ? null : updatedTitle);
 
     }
-
     private static void OnOptionFive()
     {
         Console.Write("Enter id of the Task to remove: ");
@@ -117,7 +115,6 @@ static public class TodoApp
         }
         RemoveTodo(idToRemove);
     }
-
     private static void OnOptionSix()
     {
         ClearTodos();
