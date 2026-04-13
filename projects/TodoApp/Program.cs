@@ -23,49 +23,43 @@ internal class Program
                 if (title == null || desc == null)
                 {
                     Console.WriteLine("Invalid input, please enter a valid title or description");
-                    Main([]);
                     break;
                 }
                 TodoApp.AddNewTodo(title, desc);
-                Main([]);
                 break;
             case 2:
                 TodoApp.DisplayTodoList();
-                Main([]);
                 break;
 
             case 3:
                 Console.Write("Enter id of the Task to toggle status: ");
-                if (int.TryParse(Console.ReadLine(), out int idOfTaskToToggleStatus))
+                if (!int.TryParse(Console.ReadLine(), out int idOfTaskToToggleStatus))
                 {
                     Console.WriteLine("Invalid input");
-                    Main([]);
                     break;
                 }
                 TodoApp.ToggleTodoStatus(idOfTaskToToggleStatus);
                 break;
             case 4:
                 Console.Write("Enter id of the Task to update: ");
-                if (int.TryParse(Console.ReadLine(), out int id))
+                if (!int.TryParse(Console.ReadLine(), out int id))
                 {
                     Console.WriteLine("Invalid input");
-                    Main([]);
                     break;
                 }
 
-                Console.WriteLine("Enter updated title: ");
+                Console.Write("Enter updated title: ");
                 string? updatedTitle = Console.ReadLine();
 
-                Console.WriteLine("Enter updated description: ");
+                Console.Write("Enter updated description: ");
                 string? updatedDescription = Console.ReadLine();
                 TodoApp.UpdateTodo(id, description: updatedDescription?.Length <= 1 ? null : updatedDescription, title: updatedTitle?.Length <= 1 ? null : updatedTitle);
                 break;
             case 5:
                 Console.Write("Enter id of the Task to update: ");
-                if (int.TryParse(Console.ReadLine(), out int idToRemove))
+                if (!int.TryParse(Console.ReadLine(), out int idToRemove))
                 {
                     Console.WriteLine("Invalid input");
-                    Main([]);
                     break;
                 }
                 TodoApp.RemoveTodo(idToRemove);
@@ -74,10 +68,11 @@ internal class Program
                 TodoApp.ClearTodos();
                 break;
             case 7:
-                break;
+                Console.WriteLine("\nThanks for using our App!....\n");
+                return;
             default:
-                Main([]);
                 break;
         }
+        Main([]);
     }
 }

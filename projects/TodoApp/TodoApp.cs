@@ -3,7 +3,7 @@ namespace TodoProject
     static public class TodoApp
     {
         private static int todoId = 0;
-        private static readonly List<Todo> todolist = [];
+        private static readonly List<Todo> todolist = [new Todo("Go Home", "finish my 10 hours and go home", ++todoId), new Todo("Finish Summatives", "Work on ML Pipeline final exam so I can be free later", ++todoId), new Todo("Do shopping", "Go to simba and buy some stuff", ++todoId)];
 
         public static void AddNewTodo(string title, string desc)
         {
