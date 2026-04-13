@@ -15,7 +15,7 @@ public static class Program
     {   
       result+=str[i];
     }
-     
+
     return result;
   }
 }
