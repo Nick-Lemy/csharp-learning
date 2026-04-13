@@ -9,7 +9,6 @@ static class TodoApp
         todolist.Add(newTask);
         Console.WriteLine($"New Task: \"{newTask.Title}\" was added successfully!");
     }
-
     static void DisplayTodoList()
     {
         Console.WriteLine("List of Todos:");
@@ -30,6 +29,17 @@ static class TodoApp
         task.Title = title ?? task.Title;
         task.Description = description ?? task.Description;
     }
+    static void RemoveTodo(int id)
+    {
+        var taskIndex = todolist.FindIndex(task => task.Id == id);
+        todolist.RemoveAt(taskIndex);
+        Console.WriteLine($"Task No{id} Removed Successfully!");
+    }
+    static void ClearTodos()
+    {
+        todolist.Clear();
+        Console.WriteLine("Todo list cleared!");
+    }
 
     static private Task FindOneTask(int id)
     {
@@ -37,16 +47,20 @@ static class TodoApp
         return task;
     }
 
-    static void RemoveTodo(int id)
+    static void RunApp()
     {
-        var taskIndex = todolist.FindIndex(task => task.Id == id);
-        todolist.RemoveAt(taskIndex);
-        Console.WriteLine($"Task No{id} Removed Successfully!");
+        Console.WriteLine("====================== Welcome to the Todo App ======================");
+        Console.WriteLine("Available Options: ");
+        Console.WriteLine("1. Add a new task");
+        Console.WriteLine("2. Display the todo list");
+        Console.WriteLine("3. Toggle the status of a task");
+        Console.WriteLine("4. Update a task");
+        Console.WriteLine("5. Remove a task");
+        Console.WriteLine("6. Clear the todo list");
+        Console.WriteLine("7. Exit\n");
+
+        Console.Write("Select un number between 1-7: ");
+
     }
 
-    static void ClearTodos()
-    {
-        todolist.Clear();
-        Console.WriteLine("Todo list cleared!");
-    }
 }
