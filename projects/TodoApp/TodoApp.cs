@@ -17,7 +17,7 @@ static public class TodoApp
         Console.WriteLine("6. Clear the todo list");
         Console.WriteLine("7. Exit\n");
 
-        Console.Write("Select un number between 1-7: ");
+        Console.Write("Select a number between 1-7: ");
 
         if (!int.TryParse(Console.ReadLine(), out int option))
         {
@@ -50,6 +50,7 @@ static public class TodoApp
                 Console.WriteLine("\nThanks for using our App!....\n");
                 return;
             default:
+                Console.WriteLine("Invalid option! Please select a number between 1 and 7.");
                 break;
         }
         RunApp();
@@ -102,13 +103,13 @@ static public class TodoApp
 
         Console.Write("Enter updated description: ");
         string? updatedDescription = Console.ReadLine();
-        UpdateTodo(id, description: updatedDescription?.Length <= 1 ? null : updatedDescription, title: updatedTitle?.Length <= 1 ? null : updatedTitle);
+        UpdateTodo(id, description: string.IsNullOrWhiteSpace(updatedDescription) ? null : updatedDescription, title: string.IsNullOrWhiteSpace(updatedTitle) ? null : updatedTitle);
 
     }
 
     private static void OnOptionFive()
     {
-        Console.Write("Enter id of the Task to update: ");
+        Console.Write("Enter id of the Task to remove: ");
         if (!int.TryParse(Console.ReadLine(), out int idToRemove))
         {
             Console.WriteLine("Invalid input");
@@ -148,7 +149,7 @@ static public class TodoApp
         var task = FindOneTodo(id);
         task.Status = !task.Status;
         Console.WriteLine(task.ToString());
-        Console.WriteLine($"Status of Task No{id}, changed to {task.Status}");
+        Console.WriteLine($"Status of Task No{id} updated successfully!");
     }
     private static void UpdateTodo(int id, string? title, string? description)
     {
@@ -156,11 +157,16 @@ static public class TodoApp
         task.Title = title ?? task.Title;
         task.Description = description ?? task.Description;
         Console.WriteLine(task.ToString());
-        Console.WriteLine($"Task No{id} updated sucessfully!");
+        Console.WriteLine($"Task No{id} updated successfully!");
     }
     private static void RemoveTodo(int id)
     {
         var taskIndex = todolist.FindIndex(task => task.Id == id);
+        if (taskIndex == -1)
+        {
+            Console.WriteLine("Task not found!");
+            return;
+        }
         todolist.RemoveAt(taskIndex);
         Console.WriteLine($"\nTask No{id} removed successfully!");
     }
@@ -171,7 +177,7 @@ static public class TodoApp
     }
     private static Todo FindOneTodo(int id)
     {
-        var task = todolist.First(task => task.Id == id) ?? throw new Exception("Task not found!");
+        var task = todolist.FirstOrDefault(task => task.Id == id) ?? throw new Exception("Task not found!");
         return task;
     }
 
