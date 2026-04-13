@@ -55,7 +55,6 @@ static public class TodoApp
                     Console.WriteLine("Invalid option! Please select a number between 1 and 7.");
                     break;
             }
-            continue;
         }
     }
 
@@ -143,14 +142,17 @@ static public class TodoApp
     }
     private static void ToggleTodoStatus(int id)
     {
-        var task = FindOneTodo(id);
+        if (!FindOneTodo(id, out Todo task)) return;
         task.Status = !task.Status;
         Console.WriteLine(task.ToString());
         Console.WriteLine($"Status of Task No{id} updated successfully!");
     }
     private static void UpdateTodo(int id, string? title, string? description)
     {
-        Todo task = FindOneTodo(id);
+        if (!FindOneTodo(id, out Todo task))
+        {
+            return;
+        }
         task.Title = title ?? task.Title;
         task.Description = description ?? task.Description;
         Console.WriteLine(task.ToString());
@@ -172,10 +174,17 @@ static public class TodoApp
         todolist.Clear();
         Console.WriteLine("\nTodo list cleared!");
     }
-    private static Todo FindOneTodo(int id)
+    private static bool FindOneTodo(int id, out Todo todo)
     {
-        var task = todolist.FirstOrDefault(task => task.Id == id) ?? throw new Exception("Task not found!");
-        return task;
+        Todo? task = todolist.FirstOrDefault(task => task.Id == id);
+        if (task == null)
+        {
+            Console.WriteLine("Task not found!");
+            todo = null!;
+            return false;
+        }
+        todo = task;
+        return true;
     }
 
 
