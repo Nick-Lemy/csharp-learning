@@ -1,13 +1,17 @@
-class Task(string title, string description, int id)
+namespace TodoProject
 {
-    public int Id {get; set;} = id;
-    public string Title { get; set; } = title;
-    public string Description { get; set; } = description;
-    public bool Status { get; set; } = false;
-
-    public override string ToString()
+    public class Todo(string title, string description, int id)
     {
-        string statusString = Status ? "Completed" : "Pending";
-        return $"No{Id} - Title: {Title}; Desc: {Description}; Status: {statusString} ";
+        public int Id { get; set; } = id;
+        public string Title { get; set; } = title;
+        public string Description { get; set; } = description;
+        public bool Status { get; set; } = false;
+
+        public override string ToString()
+        {
+            string statusString = Status ? "Completed" : "Pending";
+            return $"No{Id} - Title: {Title}; Desc: {Description}; Status: {statusString} ";
+        }
     }
+
 }
