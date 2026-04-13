@@ -120,7 +120,6 @@ static public class TodoApp
     }
 
 
-
     private static void AddNewTodo(string title, string desc)
     {
         Todo newTask = new(title, desc, id: ++todoId);
@@ -186,7 +185,5 @@ static public class TodoApp
         todo = task;
         return true;
     }
-
-
 
 }
