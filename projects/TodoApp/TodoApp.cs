@@ -3,14 +3,7 @@ namespace TodoProject;
 static public class TodoApp
 {
     private static int todoId = 0;
-    private static readonly List<Todo> todolist = [new Todo("Go Home", "finish my 10 hours and go home", ++todoId), new Todo("Finish Summatives", "Work on ML Pipeline final exam so I can be free later", ++todoId), new Todo("Do shopping", "Go to simba and buy some stuff", ++todoId)];
-
-    private static void AddNewTodo(string title, string desc)
-    {
-        Todo newTask = new(title, desc, id: ++todoId);
-        todolist.Add(newTask);
-        Console.WriteLine($"\nNew Task: \"{newTask.Title}\" was added successfully!");
-    }
+    private static readonly List<Todo> todolist = [];
 
     public static void RunApp()
     {
@@ -130,6 +123,13 @@ static public class TodoApp
     }
 
 
+
+    private static void AddNewTodo(string title, string desc)
+    {
+        Todo newTask = new(title, desc, id: ++todoId);
+        todolist.Add(newTask);
+        Console.WriteLine($"\nNew Task: \"{newTask.Title}\" was added successfully!");
+    }
     private static void DisplayTodoList()
     {
         if (todolist.Count == 0)
@@ -169,7 +169,6 @@ static public class TodoApp
         todolist.Clear();
         Console.WriteLine("\nTodo list cleared!");
     }
-
     private static Todo FindOneTodo(int id)
     {
         var task = todolist.First(task => task.Id == id) ?? throw new Exception("Task not found!");
