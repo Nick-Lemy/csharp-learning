@@ -33,7 +33,18 @@ internal class Program
                 TodoApp.DisplayTodoList();
                 Main([]);
                 break;
+
             case 3:
+                Console.Write("Enter id of the Task to toggle status: ");
+                if (int.TryParse(Console.ReadLine(), out int idOfTaskToToggleStatus))
+                {
+                    Console.WriteLine("Invalid input");
+                    Main([]);
+                    break;
+                }
+                TodoApp.ToggleTodoStatus(idOfTaskToToggleStatus);
+                break;
+            case 4:
                 Console.Write("Enter id of the Task to update: ");
                 if (int.TryParse(Console.ReadLine(), out int id))
                 {
@@ -49,9 +60,23 @@ internal class Program
                 string? updatedDescription = Console.ReadLine();
                 TodoApp.UpdateTodo(id, description: updatedDescription?.Length <= 1 ? null : updatedDescription, title: updatedTitle?.Length <= 1 ? null : updatedTitle);
                 break;
+            case 5:
+                Console.Write("Enter id of the Task to update: ");
+                if (int.TryParse(Console.ReadLine(), out int idToRemove))
+                {
+                    Console.WriteLine("Invalid input");
+                    Main([]);
+                    break;
+                }
+                TodoApp.RemoveTodo(idToRemove);
+                break;
+            case 6:
+                TodoApp.ClearTodos();
+                break;
             case 7:
                 break;
             default:
+                Main([]);
                 break;
         }
     }

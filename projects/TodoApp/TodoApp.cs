@@ -28,6 +28,7 @@ namespace TodoProject
         {
             var task = FindOneTodo(id);
             task.Status = !task.Status;
+            Console.WriteLine(task.ToString());
             Console.WriteLine($"Status of Task No{id}, changed to {task.Status}");
         }
         public static void UpdateTodo(int id, string? title, string? description)
