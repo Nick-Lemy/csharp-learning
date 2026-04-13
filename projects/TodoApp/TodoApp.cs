@@ -5,13 +5,13 @@ namespace TodoProject
         private static int todoId = 0;
         private static readonly List<Todo> todolist = [new Todo("Go Home", "finish my 10 hours and go home", ++todoId), new Todo("Finish Summatives", "Work on ML Pipeline final exam so I can be free later", ++todoId), new Todo("Do shopping", "Go to simba and buy some stuff", ++todoId)];
 
-        public static void AddNewTodo(string title, string desc)
+        private static void AddNewTodo(string title, string desc)
         {
             Todo newTask = new(title, desc, id: ++todoId);
             todolist.Add(newTask);
             Console.WriteLine($"\nNew Task: \"{newTask.Title}\" was added successfully!");
         }
-        public static void DisplayTodoList()
+        private static void DisplayTodoList()
         {
             if (todolist.Count == 0)
             {
@@ -24,14 +24,14 @@ namespace TodoProject
                 Console.WriteLine(task);
             }
         }
-        public static void ToggleTodoStatus(int id)
+        private static void ToggleTodoStatus(int id)
         {
             var task = FindOneTodo(id);
             task.Status = !task.Status;
             Console.WriteLine(task.ToString());
             Console.WriteLine($"Status of Task No{id}, changed to {task.Status}");
         }
-        public static void UpdateTodo(int id, string? title, string? description)
+        private static void UpdateTodo(int id, string? title, string? description)
         {
             Todo task = FindOneTodo(id);
             task.Title = title ?? task.Title;
@@ -39,19 +39,19 @@ namespace TodoProject
             Console.WriteLine(task.ToString());
             Console.WriteLine($"Task No{id} updated sucessfully!");
         }
-        public static void RemoveTodo(int id)
+        private static void RemoveTodo(int id)
         {
             var taskIndex = todolist.FindIndex(task => task.Id == id);
             todolist.RemoveAt(taskIndex);
             Console.WriteLine($"\nTask No{id} removed successfully!");
         }
-        public static void ClearTodos()
+        private static void ClearTodos()
         {
             todolist.Clear();
             Console.WriteLine("\nTodo list cleared!");
         }
 
-        static private Todo FindOneTodo(int id)
+        private static Todo FindOneTodo(int id)
         {
             var task = todolist.First(task => task.Id == id) ?? throw new Exception("Task not found!");
             return task;
@@ -71,6 +71,109 @@ namespace TodoProject
 
             Console.Write("Select un number between 1-7: ");
 
+            if (!int.TryParse(Console.ReadLine(), out int option))
+            {
+                Console.WriteLine("Invalid input! Please enter a number corresponding to the options.");
+                RunApp();
+            }
+
+            switch (option)
+            {
+                case 1:
+                    OnOptionOne();
+                    break;
+                case 2:
+                    OnOptionTwo();
+                    break;
+
+                case 3:
+                    OnOptionThree();
+                    break;
+                case 4:
+                    OnOptionFour();
+                    break;
+                case 5:
+                    OnOptionFive();
+                    break;
+                case 6:
+                    OnOptionSix();
+                    break;
+                case 7:
+                    Console.WriteLine("\nThanks for using our App!....\n");
+                    return;
+                default:
+                    break;
+            }
+            RunApp();
+
+        }
+
+
+
+        private static void OnOptionOne()
+        {
+            Console.Write("Enter new task's title: ");
+            string? title = Console.ReadLine();
+
+            Console.Write("Enter new task's description: ");
+            string? desc = Console.ReadLine();
+
+            if (title == null || desc == null)
+            {
+                Console.WriteLine("Invalid input, please enter a valid title or description");
+                return;
+            }
+            AddNewTodo(title, desc);
+        }
+
+        private static void OnOptionTwo()
+        {
+            DisplayTodoList();
+        }
+
+        private static void OnOptionThree()
+        {
+            Console.Write("Enter id of the Task to toggle status: ");
+            if (!int.TryParse(Console.ReadLine(), out int idOfTaskToToggleStatus))
+            {
+                Console.WriteLine("Invalid input");
+                return;
+            }
+            ToggleTodoStatus(idOfTaskToToggleStatus);
+        }
+
+        private static void OnOptionFour()
+        {
+            Console.Write("Enter id of the Task to update: ");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Invalid input");
+                return;
+            }
+
+            Console.Write("Enter updated title: ");
+            string? updatedTitle = Console.ReadLine();
+
+            Console.Write("Enter updated description: ");
+            string? updatedDescription = Console.ReadLine();
+            UpdateTodo(id, description: updatedDescription?.Length <= 1 ? null : updatedDescription, title: updatedTitle?.Length <= 1 ? null : updatedTitle);
+
+        }
+
+        private static void OnOptionFive()
+        {
+            Console.Write("Enter id of the Task to update: ");
+            if (!int.TryParse(Console.ReadLine(), out int idToRemove))
+            {
+                Console.WriteLine("Invalid input");
+                return;
+            }
+            RemoveTodo(idToRemove);
+        }
+
+        private static void OnOptionSix()
+        {
+            ClearTodos();
         }
 
     }
