@@ -1,7 +1,6 @@
 using Npgsql;
 namespace TodoProject;
 
-using dotenv.net;
 static public class Database
 {
     private static readonly NpgsqlConnection conn = new(Config.connectionString);
