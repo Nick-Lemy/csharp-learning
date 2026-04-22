@@ -145,6 +145,7 @@ static public class TodoApp
         }
         task.Title = title ?? task.Title;
         task.Description = description ?? task.Description;
+        Database.UpdateTodo(id, task);
         Console.WriteLine(task.ToString());
         Console.WriteLine($"Task No{id} updated successfully!");
     }

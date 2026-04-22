@@ -137,4 +137,29 @@ class Database
             conn.Close();
         }
     }
+
+    public static void UpdateTodo(int id, Todo todo)
+    {
+        try
+        {
+            conn.Open();
+            string query = "UPDATE todos SET title = @title, description = @description WHERE id = @id";
+            using NpgsqlCommand cmd = new(query, conn);
+            cmd.Parameters.AddWithValue("@title", todo.Title);
+            cmd.Parameters.AddWithValue("@description", todo.Description);
+            cmd.Parameters.AddWithValue("@id", todo.Id);
+            int rowsAffected = cmd.ExecuteNonQuery();
+            Console.WriteLine($"Rows updated: {rowsAffected}");
+
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+        finally
+        {
+            conn.Close();
+        }
+    }
 }
