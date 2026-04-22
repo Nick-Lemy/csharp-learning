@@ -170,5 +170,4 @@ static public class TodoApp
         todo = task;
         return true;
     }
-
 }
