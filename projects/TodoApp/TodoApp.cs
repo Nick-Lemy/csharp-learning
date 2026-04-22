@@ -128,19 +128,13 @@ static public class TodoApp
     }
     private static void DisplayTodoList()
     {
-        if (todolist.Count == 0)
-        {
-            Console.WriteLine("\nNo Todos!");
-            return;
-        }
         Console.WriteLine("\nList of Todos:");
         Database.GetTodos();
     }
     private static void ToggleTodoStatus(int id)
     {
         if (!FindOneTodo(id, out Todo task)) return;
-        task.Status = !task.Status;
-        Console.WriteLine(task.ToString());
+        Database.ToggleStatus(id, task.Status);
         Console.WriteLine($"Status of Task No{id} updated successfully!");
     }
     private static void UpdateTodo(int id, string? title, string? description)
@@ -156,13 +150,7 @@ static public class TodoApp
     }
     private static void RemoveTodo(int id)
     {
-        var taskIndex = todolist.FindIndex(task => task.Id == id);
-        if (taskIndex == -1)
-        {
-            Console.WriteLine("Task not found!");
-            return;
-        }
-        todolist.RemoveAt(taskIndex);
+        Database.DeleteTodo(id);
         Console.WriteLine($"\nTask No{id} removed successfully!");
     }
     private static void ClearTodos()
@@ -172,7 +160,7 @@ static public class TodoApp
     }
     private static bool FindOneTodo(int id, out Todo todo)
     {
-        Todo? task = todolist.FirstOrDefault(task => task.Id == id);
+        Todo? task = Database.GetOneTodo(id);
         if (task == null)
         {
             Console.WriteLine("Task not found!");

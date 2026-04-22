@@ -30,7 +30,7 @@ class Database
         }
     }
 
-    public static void GetOneTodo(int id)
+    public static Todo? GetOneTodo(int id)
     {
         using SqlConnection conn = new(connectionString);
         try
@@ -38,12 +38,24 @@ class Database
             conn.Open();
             string query = "SELECT * FROM todos WHERE id = @id";
             using SqlCommand cmd = new(query, conn);
-            int rowsAffected = cmd.ExecuteNonQuery();
-            Console.WriteLine($"Inserted rows: {rowsAffected}");
+            cmd.Parameters.AddWithValue("@id", id);
+            using SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                Todo todo = new(
+                    id: (int)reader["id"],
+                    title: (string)reader["title"],
+                    description: (string)reader["description"]
+                )
+                { Status = (bool)reader["status"] };
+                return todo;
+            }
+            return null;
         }
         catch (Exception ex)
         {
             Console.WriteLine("Error: " + ex.Message);
+            throw;
         }
     }
     public static void AddTodo(Todo todo)
@@ -66,6 +78,7 @@ class Database
         catch (Exception ex)
         {
             Console.WriteLine("Error: " + ex.Message);
+            throw;
         }
     }
 
@@ -84,6 +97,7 @@ class Database
         catch (Exception ex)
         {
             Console.WriteLine("Error: " + ex.Message);
+            throw;
         }
     }
 
@@ -103,6 +117,7 @@ class Database
         catch (Exception ex)
         {
             Console.WriteLine("Error: " + ex.Message);
+            throw;
         }
     }
 }
