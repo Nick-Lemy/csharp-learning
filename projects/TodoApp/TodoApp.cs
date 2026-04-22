@@ -123,7 +123,7 @@ static public class TodoApp
     private static void AddNewTodo(string title, string desc)
     {
         Todo newTask = new(title, desc, id: ++todoId);
-        todolist.Add(newTask);
+        Database.AddTodo(newTask);
         Console.WriteLine($"\nNew Task: \"{newTask.Title}\" was added successfully!");
     }
     private static void DisplayTodoList()
@@ -134,10 +134,7 @@ static public class TodoApp
             return;
         }
         Console.WriteLine("\nList of Todos:");
-        foreach (Todo task in todolist)
-        {
-            Console.WriteLine(task);
-        }
+        Database.GetTodos();
     }
     private static void ToggleTodoStatus(int id)
     {

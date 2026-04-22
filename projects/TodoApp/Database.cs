@@ -30,6 +30,22 @@ class Database
         }
     }
 
+    public static void GetOneTodo(int id)
+    {
+        using SqlConnection conn = new(connectionString);
+        try
+        {
+            conn.Open();
+            string query = "SELECT * FROM todos WHERE id = @id";
+            using SqlCommand cmd = new(query, conn);
+            int rowsAffected = cmd.ExecuteNonQuery();
+            Console.WriteLine($"Inserted rows: {rowsAffected}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
     public static void AddTodo(Todo todo)
     {
         using SqlConnection conn = new(connectionString);
