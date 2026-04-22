@@ -5,10 +5,10 @@ class Database
 {
 
     private static readonly string connectionString = "Host=localhost;Port=5432;Username=postgres;Database=todo_app;";
+    private static readonly NpgsqlConnection conn = new(connectionString);
 
     public static void GetTodos()
     {
-        using NpgsqlConnection conn = new(connectionString);
         try
         {
             conn.Open();
@@ -22,18 +22,22 @@ class Database
             Todo[] todolist = [];
             while (reader.Read())
             {
-                Console.WriteLine(reader["id"] + ", " + reader["title"] + ", " + reader["description"]);
+                string status = (bool)reader["status"] ? "Completed" : "Pending";
+                Console.WriteLine($"id: {reader["id"]}, title: {reader["title"]}, desc: {reader["description"]}, status: {status}");
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine("Error: " + ex.Message);
         }
+        finally
+        {
+            conn.Close();
+        }
     }
 
     public static Todo? GetOneTodo(int id)
     {
-        using NpgsqlConnection conn = new(connectionString);
         try
         {
             conn.Open();
@@ -58,10 +62,13 @@ class Database
             Console.WriteLine("Error: " + ex.Message);
             throw;
         }
+        finally
+        {
+            conn.Close();
+        }
     }
     public static void AddTodo(Todo todo)
     {
-        using NpgsqlConnection conn = new(connectionString);
         try
         {
             conn.Open();
@@ -81,13 +88,14 @@ class Database
             Console.WriteLine("Error: " + ex.Message);
             throw;
         }
+        conn.Close();
     }
 
     public static void DeleteTodo(int id)
     {
-        using NpgsqlConnection conn = new(connectionString);
         try
         {
+            conn.Open();
             string query = "DELETE FROM todos WHERE id = @id";
             using NpgsqlCommand cmd = new(query, conn);
             cmd.Parameters.AddWithValue("@id", id);
@@ -100,13 +108,17 @@ class Database
             Console.WriteLine("Error: " + ex.Message);
             throw;
         }
+        finally
+        {
+            conn.Close();
+        }
     }
 
     public static void ToggleStatus(int id, bool newStatus)
     {
-        using NpgsqlConnection conn = new(connectionString);
         try
         {
+            conn.Open();
             string query = "UPDATE todos SET status = @status WHERE id = @id";
             using NpgsqlCommand cmd = new(query, conn);
             cmd.Parameters.AddWithValue("@status", newStatus);
@@ -119,6 +131,10 @@ class Database
         {
             Console.WriteLine("Error: " + ex.Message);
             throw;
+        }
+        finally
+        {
+            conn.Close();
         }
     }
 }
