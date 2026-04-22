@@ -156,7 +156,7 @@ static public class TodoApp
     }
     private static void ClearTodos()
     {
-        todolist.Clear();
+        Database.ClearTodos();
         Console.WriteLine("\nTodo list cleared!");
     }
     private static bool FindOneTodo(int id, out Todo todo)

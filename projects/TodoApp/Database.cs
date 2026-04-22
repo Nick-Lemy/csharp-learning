@@ -73,10 +73,9 @@ class Database
         {
             conn.Open();
             Console.WriteLine("Connection successful!");
-            string query = "INSERT INTO todos (id, title, description, status) VALUES (@id, @title, @description, @status)";
+            string query = "INSERT INTO todos (title, description, status) VALUES (@title, @description, @status)";
 
             NpgsqlCommand cmd = new(query, conn);
-            cmd.Parameters.AddWithValue("@id", todo.Id);
             cmd.Parameters.AddWithValue("@title", todo.Title);
             cmd.Parameters.AddWithValue("@description", todo.Description);
             cmd.Parameters.AddWithValue("@status", todo.Status);
@@ -152,9 +151,29 @@ class Database
             Console.WriteLine($"Rows updated: {rowsAffected}");
 
         }
-        catch (System.Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine("Error: ", ex.Message);
+            throw;
+        }
+        finally
+        {
+            conn.Close();
+        }
+    }
 
+    public static void ClearTodos()
+    {
+        try
+        {
+            conn.Open();
+            string query = "TRUNCATE TABLE todos";
+            NpgsqlCommand cmd = new(query, conn);
+            cmd.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: ", ex.Message);
             throw;
         }
         finally
