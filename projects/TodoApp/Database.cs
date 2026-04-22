@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+using Npgsql;
 namespace TodoProject;
 
 class Database
@@ -8,7 +8,7 @@ class Database
 
     public static void GetTodos()
     {
-        using SqlConnection conn = new(connectionString);
+        using NpgsqlConnection conn = new(connectionString);
         try
         {
             conn.Open();
@@ -16,8 +16,8 @@ class Database
 
             string query = "SELECT * FROM Todos";
 
-            SqlCommand cmd = new(query, conn);
-            SqlDataReader reader = cmd.ExecuteReader();
+            NpgsqlCommand cmd = new(query, conn);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
@@ -32,14 +32,14 @@ class Database
 
     public static Todo? GetOneTodo(int id)
     {
-        using SqlConnection conn = new(connectionString);
+        using NpgsqlConnection conn = new(connectionString);
         try
         {
             conn.Open();
             string query = "SELECT * FROM todos WHERE id = @id";
-            using SqlCommand cmd = new(query, conn);
+            using NpgsqlCommand cmd = new(query, conn);
             cmd.Parameters.AddWithValue("@id", id);
-            using SqlDataReader reader = cmd.ExecuteReader();
+            using NpgsqlDataReader reader = cmd.ExecuteReader();
             if (reader.Read())
             {
                 Todo todo = new(
@@ -60,14 +60,14 @@ class Database
     }
     public static void AddTodo(Todo todo)
     {
-        using SqlConnection conn = new(connectionString);
+        using NpgsqlConnection conn = new(connectionString);
         try
         {
             conn.Open();
             Console.WriteLine("Connection successful!");
             string query = "INSERT INTO todos (id, title, description, status) VALUES (@id, @title, @description, @status)";
 
-            SqlCommand cmd = new(query, conn);
+            NpgsqlCommand cmd = new(query, conn);
             cmd.Parameters.AddWithValue("@id", todo.Id);
             cmd.Parameters.AddWithValue("@title", todo.Title);
             cmd.Parameters.AddWithValue("@description", todo.Description);
@@ -84,11 +84,11 @@ class Database
 
     public static void DeleteTodo(int id)
     {
-        using SqlConnection conn = new(connectionString);
+        using NpgsqlConnection conn = new(connectionString);
         try
         {
             string query = "DELETE FROM todos WHERE id = @id";
-            using SqlCommand cmd = new(query, conn);
+            using NpgsqlCommand cmd = new(query, conn);
             cmd.Parameters.AddWithValue("@id", id);
 
             int rowsAffected = cmd.ExecuteNonQuery();
@@ -103,11 +103,11 @@ class Database
 
     public static void ToggleStatus(int id, bool newStatus)
     {
-        using SqlConnection conn = new(connectionString);
+        using NpgsqlConnection conn = new(connectionString);
         try
         {
             string query = "UPDATE todos SET status = @status WHERE id = @id";
-            using SqlCommand cmd = new(query, conn);
+            using NpgsqlCommand cmd = new(query, conn);
             cmd.Parameters.AddWithValue("@status", newStatus);
             cmd.Parameters.AddWithValue("@id", id);
 
