@@ -134,7 +134,7 @@ static public class TodoApp
     private static void ToggleTodoStatus(int id)
     {
         if (!FindOneTodo(id, out Todo task)) return;
-        Database.ToggleStatus(id, task.Status);
+        Database.ChangeStatus(id, !task.Status);
         Console.WriteLine($"Status of Task No{id} updated successfully!");
     }
     private static void UpdateTodo(int id, string? title, string? description)

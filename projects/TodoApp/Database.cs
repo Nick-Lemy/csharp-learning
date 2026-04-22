@@ -114,7 +114,7 @@ class Database
         }
     }
 
-    public static void ToggleStatus(int id, bool newStatus)
+    public static void ChangeStatus(int id, bool newStatus)
     {
         try
         {
