@@ -1,12 +1,10 @@
 using Npgsql;
 namespace TodoProject;
 
-class Database
+using dotenv.net;
+static public class Database
 {
-
-    private static readonly string connectionString = "Host=localhost;Port=5432;Username=postgres;Database=todo_app;";
-    private static readonly NpgsqlConnection conn = new(connectionString);
-
+    private static readonly NpgsqlConnection conn = new(Config.connectionString);
     public static void GetTodos()
     {
         try
@@ -153,7 +151,7 @@ class Database
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error: ", ex.Message);
+            Console.WriteLine("Error: " + ex.Message);
             throw;
         }
         finally
@@ -173,7 +171,7 @@ class Database
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error: ", ex.Message);
+            Console.WriteLine("Error: " + ex.Message);
             throw;
         }
         finally
