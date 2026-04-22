@@ -3,7 +3,6 @@ namespace TodoProject;
 static public class TodoApp
 {
     private static int todoId = 0;
-    private static readonly List<Todo> todolist = [];
 
     public static void RunApp()
     {

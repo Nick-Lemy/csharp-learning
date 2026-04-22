@@ -9,14 +9,11 @@ static public class Database
         try
         {
             conn.Open();
-            Console.WriteLine("Connection successful!");
-
             string query = "SELECT * FROM Todos";
 
             NpgsqlCommand cmd = new(query, conn);
             NpgsqlDataReader reader = cmd.ExecuteReader();
 
-            Todo[] todolist = [];
             while (reader.Read())
             {
                 string status = (bool)reader["status"] ? "Completed" : "Pending";
@@ -26,6 +23,7 @@ static public class Database
         catch (Exception ex)
         {
             Console.WriteLine("Error: " + ex.Message);
+            throw;
         }
         finally
         {
