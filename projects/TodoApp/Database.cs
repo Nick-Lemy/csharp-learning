@@ -1,9 +1,9 @@
 using Microsoft.Data.SqlClient;
-
 namespace TodoProject;
 
 class Database
 {
+
     private static readonly string connectionString = "Host=localhost;Port=5432;Username=postgres;Database=todo_app;";
 
     public static void GetTodos()
@@ -30,18 +30,22 @@ class Database
         }
     }
 
-    public static void AddTodo()
+    public static void AddTodo(Todo todo)
     {
         using SqlConnection conn = new(connectionString);
         try
         {
             conn.Open();
             Console.WriteLine("Connection successful!");
-            string query = "INSERT INTO todos (Name) VALUES (@name)";
+            string query = "INSERT INTO todos (id, title, description, status) VALUES (@id, @title, @description, @status)";
 
             SqlCommand cmd = new(query, conn);
-            cmd.Parameters.AddWithValue("@name", "Nick");
-            cmd.ExecuteNonQuery();
+            cmd.Parameters.AddWithValue("@id", todo.Id);
+            cmd.Parameters.AddWithValue("@title", todo.Title);
+            cmd.Parameters.AddWithValue("@description", todo.Description);
+            cmd.Parameters.AddWithValue("@status", todo.Status);
+            int rowsAffected = cmd.ExecuteNonQuery();
+            Console.WriteLine($"Inserted rows: {rowsAffected}");
         }
         catch (Exception ex)
         {
