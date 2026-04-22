@@ -19,9 +19,10 @@ class Database
             NpgsqlCommand cmd = new(query, conn);
             NpgsqlDataReader reader = cmd.ExecuteReader();
 
+            Todo[] todolist = [];
             while (reader.Read())
             {
-                Console.WriteLine(reader["Name"]);
+                Console.WriteLine(reader["id"] + ", " + reader["title"] + ", " + reader["description"]);
             }
         }
         catch (Exception ex)
