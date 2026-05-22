@@ -25,13 +25,21 @@ public class FileNoteStorage : INoteStorage
     {
         string filePath = GetFilePath(id);
         if (!File.Exists(filePath)) return null;
-        string content = await File.ReadAllTextAsync(filePath);
-        var lines = content.Split('\n');
-        string title = lines[0].Replace("Title: ", "");
-        string noteContent = lines[1].Replace("Content: ", "");
-        DateTimeOffset createdAt = DateTimeOffset.Parse(lines[2].Replace("CreatedAt: ", ""));
+        try
+        {
+            string content = await File.ReadAllTextAsync(filePath);
+            var lines = content.Split('\n');
+            string title = lines[0].Replace("Title: ", "");
+            string noteContent = lines[1].Replace("Content: ", "");
+            DateTimeOffset createdAt = DateTimeOffset.Parse(lines[2].Replace("CreatedAt: ", ""));
 
-        return new Note(title, noteContent) { Id = id, CreatedAt = createdAt };
+            return new Note(title, noteContent) { Id = id, CreatedAt = createdAt };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading note with ID {id}: {ex.Message}");
+            return null;
+        }
     }
 
     public void DeleteNote(int id)

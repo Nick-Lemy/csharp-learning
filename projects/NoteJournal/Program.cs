@@ -40,7 +40,11 @@ while (true)
 
         case 2:
             var notes = await journal.GetAllNotesAsync();
-            if (notes.Count == 0) { Console.WriteLine("No notes yet."); break; }
+            if (notes.Count == 0)
+            {
+                Console.WriteLine("No notes yet.");
+                break;
+            }
 
             Console.Write("Page number: ");
             if (!int.TryParse(Console.ReadLine(), out int page)) page = 1;
@@ -51,15 +55,30 @@ while (true)
 
         case 3:
             Console.Write("Note ID: ");
-            if (!int.TryParse(Console.ReadLine(), out int readId)) { Console.WriteLine("Invalid ID."); break; }
+            if (!int.TryParse(Console.ReadLine(), out int readId))
+            {
+                Console.WriteLine("Invalid ID.");
+                break;
+            }
+
             var loaded = await storage.LoadNoteAsync(readId);
-            if (loaded == null) { Console.WriteLine("Note not found."); break; }
+            if (loaded == null)
+            {
+                Console.WriteLine("Note not found.");
+                break;
+            }
+
             journal.DisplayNote(loaded, n => $"\n[{n.Id}] {n.Title}\n{n.CreatedAt:yyyy-MM-dd HH:mm}\n\n{n.Content}\n");
             break;
 
         case 4:
             Console.Write("Note ID to delete: ");
-            if (!int.TryParse(Console.ReadLine(), out int deleteId)) { Console.WriteLine("Invalid ID."); break; }
+            if (!int.TryParse(Console.ReadLine(), out int deleteId))
+            {
+                Console.WriteLine("Invalid ID.");
+                break;
+            }
+
             journal.DeleteNote(deleteId);
             break;
 
