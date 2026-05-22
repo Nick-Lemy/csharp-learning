@@ -24,7 +24,7 @@ public class Journal
 
     public void DeleteNote(int id)
     {
-        _storage.DeleteNoteAsync(id);
+        _storage.DeleteNote(id);
         OnNoteDeleted?.Invoke(id);
     }
 

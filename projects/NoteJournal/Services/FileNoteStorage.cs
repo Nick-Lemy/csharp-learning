@@ -34,7 +34,7 @@ public class FileNoteStorage : INoteStorage
         return new Note(title, noteContent) { Id = id, CreatedAt = createdAt };
     }
 
-    public void DeleteNoteAsync(int id)
+    public void DeleteNote(int id)
     {
         string filePath = GetFilePath(id);
         if (!File.Exists(filePath)) Console.WriteLine($"Note with ID {id} not found.");
