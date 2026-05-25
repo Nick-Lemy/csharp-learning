@@ -30,7 +30,7 @@ public class Journal
 
     public async Task<List<Note>> GetAllNotesAsync()
     {
-        List<int> ids = await _storage.GetAllNoteIdsAsync();
+        List<int> ids = _storage.GetAllNoteIdsAsync();
         List<Note> notes = [];
         foreach (int id in ids)
         {

@@ -7,5 +7,5 @@ public interface INoteStorage
     Task SaveNoteAsync(Note note);
     Task<Note?> LoadNoteAsync(int id);
     void DeleteNote(int id);
-    Task<List<int>> GetAllNoteIdsAsync();
+    List<int> GetAllNoteIdsAsync();
 }

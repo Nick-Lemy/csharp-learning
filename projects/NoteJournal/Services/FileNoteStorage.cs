@@ -53,7 +53,7 @@ public class FileNoteStorage : INoteStorage
         }
     }
 
-    public async Task<List<int>> GetAllNoteIdsAsync()
+    public List<int> GetAllNoteIdsAsync()
     {
         var files = Directory.GetFiles(Directory.GetCurrentDirectory(), "note_*.txt");
         return files.Select(f => int.Parse(Path.GetFileNameWithoutExtension(f).Replace("note_", ""))).ToList();
