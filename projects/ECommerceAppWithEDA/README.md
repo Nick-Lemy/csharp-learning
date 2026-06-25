@@ -47,13 +47,12 @@ docker exec -it kafka kafka-topics --bootstrap-server localhost:9092 --list
 
 ### 2. Configure email for NotificationService
 
-Store your Gmail credentials in user secrets so they stay out of git:
+NotificationService reads your Gmail credentials from environment variables. Export them in the same terminal you run it from:
 
 ```bash
-dotnet user-secrets set "Gmail:AppPassword" "your-app-password" --project NotificationService
+export GMAIL_USER="your-email@gmail.com"
+export GMAIL_APP_PASSWORD="your-app-password"
 ```
-
-The Gmail user and SMTP host are set in `NotificationService/appsettings.json`.
 
 ## Running
 
