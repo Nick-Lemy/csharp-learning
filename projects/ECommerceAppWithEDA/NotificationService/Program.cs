@@ -32,7 +32,7 @@ public class Program
         }
         catch (OperationCanceledException)
         {
-            
+            Console.WriteLine("Shutting down...");
         }
         finally
         {
