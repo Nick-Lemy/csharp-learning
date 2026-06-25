@@ -1,57 +1,53 @@
-﻿using System.Text.Json;
-using Confluent.Kafka;
+﻿using OrderService;
+using OrderService.Models;
 
-namespace OrderService;
+using var publisher = new OrderPublisher("localhost:9092");
 
-class Program
+Console.WriteLine("=== Order Service ===");
+Console.Write("Enter your email: ");
+var email = Console.ReadLine()?.Trim();
+
+if (string.IsNullOrWhiteSpace(email))
 {
-    static async Task Main(string[] args)
-    {
-        var config = new ProducerConfig 
-        {
-        BootstrapServers = "localhost:9092", 
-        Acks = Acks.All
-        };
-        using var producer = new ProducerBuilder<string, string>(config).Build();
-
-        var items = new[] { "Book", "Mug", "Keyboard", "Pen", "Headphones" };
-        var rng = new Random();
-
-        Console.WriteLine("Press ENTER to place an order, or 'q' then ENTER to quit.");
-
-        while (true)
-        {
-            var input = Console.ReadLine();
-            if (input == "q") break;
-
-            var customerId = Guid.NewGuid();
-            var order = new OrderPlaced(
-                OrderId: Guid.NewGuid(),
-                CustomerId: customerId,
-                CustomerEmail: $"n.kayiranga@alustudent.com",
-                Item: items[rng.Next(items.Length)],
-                Quantity: rng.Next(1, 5),
-                Price: rng.Next(5, 100),
-                PlacedAt: DateTimeOffset.UtcNow
-                );
-
-            var json = JsonSerializer.Serialize(order);
-
-            await producer.ProduceAsync("orders",
-                new Message<string, string> { Key = customerId.ToString(), Value = json });
-
-            Console.WriteLine($"Placed order: {order.Item} x{order.Quantity}");
-        }
-
-        producer.Flush(TimeSpan.FromSeconds(5));
-    }
+    Console.WriteLine("No email entered. Exiting.");
+    return;
 }
 
-record OrderPlaced(
-    Guid OrderId,
-    Guid CustomerId,
-    string CustomerEmail,
-    string Item,
-    int Quantity,
-    decimal Price,
-    DateTimeOffset PlacedAt);
+while (true)
+{
+    Console.WriteLine("\nAvailable products:");
+    for (int i = 0; i < Catalog.Products.Count; i++)
+        Console.WriteLine($"  {i + 1}. {Catalog.Products[i].Name} - ${Catalog.Products[i].Price}");
+
+    Console.Write("Pick a product number (or 'q' to quit): ");
+    var choice = Console.ReadLine()?.Trim();
+    if (choice == "q") break;
+
+    if (!int.TryParse(choice, out int index) || index < 1 || index > Catalog.Products.Count)
+    {
+        Console.WriteLine("Invalid choice, try again.");
+        continue;
+    }
+    var product = Catalog.Products[index - 1];
+
+    Console.Write("Quantity: ");
+    if (!int.TryParse(Console.ReadLine(), out int quantity) || quantity < 1)
+    {
+        Console.WriteLine("Invalid quantity, defaulting to 1.");
+        quantity = 1;
+    }
+
+    var order = new OrderPlaced(
+        OrderId: Guid.NewGuid(),
+        CustomerId: Guid.NewGuid(),
+        CustomerEmail: email,
+        Item: product.Name,
+        Quantity: quantity,
+        Price: product.Price,
+        PlacedAt: DateTime.UtcNow);
+
+    await publisher.PublishAsync(order);
+    Console.WriteLine($"Order placed: {order.Quantity}x {order.Item} for {email}");
+}
+
+Console.WriteLine("Goodbye!");
