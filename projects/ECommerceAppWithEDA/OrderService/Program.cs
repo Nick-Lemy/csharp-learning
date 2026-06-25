@@ -42,6 +42,8 @@ class Program
 
             Console.WriteLine($"Placed order: {order.Item} x{order.Quantity}");
         }
+
+        producer.Flush(TimeSpan.FromSeconds(5));
     }
 }
 
