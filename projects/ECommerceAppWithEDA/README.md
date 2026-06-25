@@ -76,5 +76,3 @@ Each product starts with a fixed stock count in InventoryService. Order a low st
 ```bash
 docker compose down
 ```
-
-Add `-v` to also wipe stored messages.
