@@ -1,52 +1,54 @@
 ﻿using System.Text.Json;
 using Confluent.Kafka;
+using InventoryService;
+using InventoryService.Models;
 
-namespace InventoryService;
-public class Program
+var store = new InventoryStore();
+using var publisher = new InventoryEventPublisher("localhost:9092");   // NEW
+
+var config = new ConsumerConfig
 {
-    public static void Main()
+    BootstrapServers = "localhost:9092",
+    GroupId = "inventory-service",
+    AutoOffsetReset = AutoOffsetReset.Earliest
+};
+
+using var consumer = new ConsumerBuilder<string, string>(config).Build();
+consumer.Subscribe("orders");
+
+var cts = new CancellationTokenSource();
+Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
+
+Console.WriteLine("InventoryService listening...");
+
+try
+{
+    while (true)
     {
-        var config = new ConsumerConfig
-        {
-            BootstrapServers = "localhost:9092",
-            GroupId = "inventory-service",
-            AutoOffsetReset = AutoOffsetReset.Earliest
-        };
+        var result = consumer.Consume(cts.Token);
+        var order = JsonSerializer.Deserialize<OrderPlaced>(result.Message.Value);
 
-        using var consumer = new ConsumerBuilder<string, string>(config).Build();
-        consumer.Subscribe("orders");
+        if(order is null) continue;
 
+        bool reserved = store.TryReserve(order.Item, order.Quantity, out int remaining);
 
-        var cts = new CancellationTokenSource();
-        Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
+        if (reserved) Console.WriteLine($"Reserved {order.Quantity}x {order.Item}. {remaining} left.");
+        else Console.WriteLine($"Could not reserve {order.Quantity}x {order.Item} ({remaining} available).");
 
-        Console.WriteLine("InventoryService listening...");
-
-        try
-        {
-            while (true)
-            {
-                var result = consumer.Consume(cts.Token);
-                var order = JsonSerializer.Deserialize<OrderPlaced>(result.Message.Value);
-                Console.WriteLine($"Reserved {order!.Quantity}x {order.Item} for order {order.OrderId}");
-            }
-        }
-        catch (OperationCanceledException)
-        {
-            Console.WriteLine("Shutting down...");
-        }
-        finally
-        {
-            consumer.Close();
-        }
+        await publisher.PublishAsync(new OrderProcessed(
+            OrderId: order.OrderId,
+            CustomerEmail: order.CustomerEmail,
+            Item: order.Item,
+            Quantity: order.Quantity,
+            Reserved: reserved,
+            Available: remaining));
     }
 }
-
- record OrderPlaced(
-      Guid OrderId,
-      Guid CustomerId,
-      string CustomerEmail,
-      string Item,
-      int Quantity,
-      decimal Price,
-      DateTimeOffset PlacedAt);
+catch (OperationCanceledException)
+{
+    Console.WriteLine("Closing InventoryService...");
+}
+finally
+{
+    consumer.Close();
+}

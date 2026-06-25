@@ -2,9 +2,9 @@
   using MailKit.Security;
   using MimeKit;
 
-  namespace NotificationService;
+  namespace NotificationService.Services;
 
-  public class SmtpEmailSender : IEmailSender
+  public class EmailSender : IEmailSender
   {
       private readonly string _host;
       private readonly int _port;
@@ -12,7 +12,7 @@
       private readonly string _password;
       private readonly string _fromAddress;
 
-      public SmtpEmailSender(string host, int port, string user, string password, string fromAddress)
+      public EmailSender(string host, int port, string user, string password, string fromAddress)
       {
           _host = host;
           _port = port;

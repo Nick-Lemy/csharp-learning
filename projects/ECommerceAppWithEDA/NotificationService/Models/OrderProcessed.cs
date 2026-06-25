@@ -1,10 +1,9 @@
 namespace NotificationService.Models;
 
-record OrderPlaced(
+public record OrderProcessed(
     Guid OrderId,
-    Guid CustomerId,
     string CustomerEmail,
     string Item,
     int Quantity,
-    decimal Price,
-    DateTime PlacedAt);
+    bool Reserved,
+    int Available); 
