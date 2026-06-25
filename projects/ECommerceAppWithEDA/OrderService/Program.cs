@@ -28,7 +28,7 @@ class Program
             var order = new OrderPlaced(
                 OrderId: Guid.NewGuid(),
                 CustomerId: customerId,
-                CustomerEmail: $"customer{rng.Next(1000)}@example.com",
+                CustomerEmail: $"n.kayiranga@alustudent.com",
                 Item: items[rng.Next(items.Length)],
                 Quantity: rng.Next(1, 5),
                 Price: rng.Next(5, 100),
