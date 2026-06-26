@@ -44,10 +44,17 @@ while (true)
         Item: product.Name,
         Quantity: quantity,
         Price: product.Price,
-        PlacedAt: DateTime.UtcNow);
+        PlacedAt: DateTimeOffset.UtcNow);
 
-    await publisher.PublishAsync(order);
-    Console.WriteLine($"Order placed: {order.Quantity}x {order.Item} for {email}");
+    try
+    {
+        await publisher.PublishAsync(order);
+        Console.WriteLine($"Order placed: {order.Quantity}x {order.Item} for {email}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Failed to place order: {ex.Message}. Please try again.");
+    }
 }
 
 Console.WriteLine("Goodbye!");

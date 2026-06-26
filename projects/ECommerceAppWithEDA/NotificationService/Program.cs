@@ -31,11 +31,12 @@ Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
 
 Console.WriteLine("NotificationService listening...");
 
-try
+while (true)
 {
-    while (true)
+    try
     {
         var result = consumer.Consume(cts.Token);
+
         var order = JsonSerializer.Deserialize<OrderProcessed>(result.Message.Value);
 
         if(order is null) continue;
@@ -45,7 +46,8 @@ try
             await emailSender.SendAsync(
                 to: order.CustomerEmail,
                 subject: "Your order is confirmed",
-                body: $"Good news! We've reserved {order.Quantity}x {order.Item}. Thank you!");
+                body: $"Good news! We've reserved {order.Quantity}x {order.Item}. Thank you!",
+                cancellationToken: cts.Token);
 
                 Console.WriteLine($"Sent CONFIRMATION to {order.CustomerEmail} for {order.Item}");
         }
@@ -54,16 +56,21 @@ try
             await emailSender.SendAsync(
                 to: order.CustomerEmail,
                 subject: "Problem with your order",
-                body: $"Sorry, we couldn't fulfill {order.Quantity}x {order.Item} (only {order.Available} in stock).");
+                body: $"Sorry, we couldn't fulfill {order.Quantity}x {order.Item} (only {order.Available} in stock).",
+                cancellationToken: cts.Token);
 
                 Console.WriteLine($"Sent OUT_OF_STOCK notice to {order.CustomerEmail} for {order.Item}");
         }
     }
+    catch (OperationCanceledException)
+    {
+        break;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Skipping message: {ex.Message}");
+    }
 }
-catch (OperationCanceledException) {
-    Console.WriteLine("Shutting down...");
-}
-finally
-{
-    consumer.Close();
-}
+
+Console.WriteLine("Shutting down...");
+consumer.Close();

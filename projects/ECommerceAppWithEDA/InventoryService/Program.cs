@@ -21,11 +21,12 @@ Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
 
 Console.WriteLine("InventoryService listening...");
 
-try
+while (true)
 {
-    while (true)
+    try
     {
         var result = consumer.Consume(cts.Token);
+
         var order = JsonSerializer.Deserialize<OrderPlaced>(result.Message.Value);
 
         if(order is null) continue;
@@ -43,12 +44,15 @@ try
             Reserved: reserved,
             Available: remaining));
     }
+    catch (OperationCanceledException)
+    {
+        break;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Skipping message: {ex.Message}");
+    }
 }
-catch (OperationCanceledException)
-{
-    Console.WriteLine("Closing InventoryService...");
-}
-finally
-{
-    consumer.Close();
-}
+
+Console.WriteLine("Closing InventoryService...");
+consumer.Close();

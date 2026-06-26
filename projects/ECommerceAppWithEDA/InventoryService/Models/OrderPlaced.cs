@@ -7,4 +7,4 @@ public record OrderPlaced(
     string Item,
     int Quantity,
     decimal Price,
-    DateTime PlacedAt);
+    DateTimeOffset PlacedAt);
